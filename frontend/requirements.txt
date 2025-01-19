@@ -1,0 +1,127 @@
+System Overview
+This is a comprehensive restaurant management system with multiple dashboards tailored to different roles:
+
+Superadmin Dashboard: Global control and analytics for all restaurants.
+Admin Dashboard: Restaurant-specific management for menus, tables, reservations, staff, and chains.
+Kitchen Dashboard: Order management and tracking for kitchen staff.
+Waiter Dashboard: Order handling and table assignments for waitstaff.
+Customer Dashboard: An interactive customer interface for ordering, tracking, and feedback.
+The system is built with RESTful APIs and real-time updates using WebSockets (or polling). It provides a seamless, role-based experience.
+
+Dashboards
+1. Superadmin Dashboard
+Purpose: Oversee all restaurants, manage global settings, and export analytics.
+
+Key Features:
+Add Restaurant:
+
+Page 1: Enter restaurant details (name, location, currency, logo).
+Page 2: Enter admin user details (name, email, phone).
+Submit generates credentials for the admin and registers the restaurant.
+Restaurants Overview:
+
+Table view with restaurant name, logo, ID, location, admin name, status (active/inactive), and actions (disable, download credentials).
+Disable prompts for superadmin password confirmation.
+Home Page:
+
+Quick actions: Add restaurant, system settings, export data, view analytics, logout.
+Real-time statistics: Total revenue, active restaurants, total staff, etc.
+List of all registered restaurants (updates dynamically).
+Export Data:
+
+Download analytics and reports in CSV, PDF, or Excel.
+
+2. Admin Dashboard
+Purpose: Restaurant-specific management, including operations and analytics.
+
+Key Features:
+Table Management:
+
+Add tables and generate QR codes (downloadable as PNG or PDF).
+View and manage table overview with action buttons.
+Menu & Inventory Management:
+
+Add dishes with details (description, categories, vegetarian/allergen/spicy icons).
+Manage inventory (update quantities via icon-based actions).
+Reservations Management:
+
+View, sort, and filter reservations by location, status, and timeframe (daily/weekly/monthly).
+Staff & Role Management:
+
+Add staff, assign roles, and manage permissions.
+Staff overview with icons (male/female), name, role, location, status, and actions (edit/delete/download credentials).
+Chain Management:
+
+Add new restaurants under a chain.
+Visual overview of chain details on cards.
+Analytics:
+
+View multiple visual analytics dimensions.
+Real-time reviews section for feedback.
+
+3. Waiter Dashboard
+Purpose: Manage table assignments and customer orders.
+
+Key Features:
+Table Overview:
+
+View current table statuses and assign tables to guests.
+Order Management:
+
+Active orders view (specific to the waiter).
+Notifications for new orders and table assignments.
+Take Order:
+
+View menu with categorized items.
+Real-time current order section showing subtotal/total.
+Search function for items.
+Options: Cancel or place order (sends order to kitchen).
+
+4. Kitchen Dashboard
+Purpose: Real-time order tracking for the kitchen staff.
+
+Key Features:
+New Orders:
+
+Real-time list with table number, items, comments, and actions: Start Preparing and View Details.
+View Details displays assigned waiter, order number, and full order breakdown.
+Order Status Management:
+
+Separate sections: New Orders, Preparing, Served.
+Search and sort functionality for orders, dishes, and waiters.
+
+5. Customer Dashboard
+Purpose: Enhance customer experience through self-service ordering and tracking.
+
+Key Features:
+Landing Page After Scanning QR Code:
+
+Displays “Welcome to [Restaurant Name]” and the table number.
+Two buttons: "Hail Waiter" or "View Menu."
+Hail Waiter:
+
+Assigns a random waiter and notifies both the waiter and the customer.
+View Menu:
+
+Options for Individual Order or Group Order.
+
+Individual Order:
+
+Displays real-time availability of menu items.
+Add items to cart with custom comments.
+Assigns order to the waiter with the least workload (or the hailed waiter).
+Options after confirmation: Track Order or Order Another Item.
+Group Order:
+
+Generates a QR code and a sharing link for guests to join the group.
+The creator is the admin, responsible for finalizing the order.
+Splitting bill option for payment.
+Order Tracking:
+
+Real-time order status updates (e.g., Preparing, Ready, Served). On the order tracking page will be a Pay for the meal button that wil take the user to the payments page
+Feedback:
+
+After the meal, prompt customers to rate service, waiter, and restaurant (ratings and comments sent to the backend).
+
+
+Also create a payments directory - where you will have the payments pages, for the customer to choose the mode of payment. The payment methods have been expalined in the backend. 

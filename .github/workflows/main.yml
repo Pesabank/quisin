@@ -1,0 +1,147 @@
+name: Quisin CI/CD
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    services:
+      mongodb:
+        image: mongo:4.4
+        ports:
+          - 27017:27017
+      redis:
+        image: redis:6
+        ports:
+          - 6379:6379
+
+    strategy:
+      matrix:
+        node-version: [16.x, 18.x]
+
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+    
+    - name: Install Dependencies
+      run: |
+        cd backend && npm ci
+        cd ../frontend && npm ci
+    
+    - name: Run Backend Tests
+      run: |
+        cd backend
+        npm run test:ci
+      env:
+        NODE_ENV: test
+        MONGO_URL: mongodb://localhost:27017/quisin_test
+        REDIS_HOST: localhost
+        JWT_SECRET: test_secret
+    
+    - name: Run Frontend Tests
+      run: |
+        cd frontend
+        npm run test:ci
+    
+    - name: Run E2E Tests
+      run: |
+        cd frontend
+        npm run test:e2e:ci
+
+  lint:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Use Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '18.x'
+        cache: 'npm'
+    
+    - name: Install Dependencies
+      run: |
+        cd backend && npm ci
+        cd ../frontend && npm ci
+    
+    - name: Lint Backend
+      run: |
+        cd backend
+        npm run lint
+    
+    - name: Lint Frontend
+      run: |
+        cd frontend
+        npm run lint
+
+  deploy-staging:
+    needs: [test, lint]
+    if: github.ref == 'refs/heads/develop'
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ secrets.AWS_REGION }}
+    
+    - name: Build and Push Docker Images
+      run: |
+        docker build -t quisin-backend:staging ./backend
+        docker build -t quisin-frontend:staging ./frontend
+        aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.ECR_REGISTRY }}
+        docker tag quisin-backend:staging ${{ secrets.ECR_REGISTRY }}/quisin-backend:staging
+        docker tag quisin-frontend:staging ${{ secrets.ECR_REGISTRY }}/quisin-frontend:staging
+        docker push ${{ secrets.ECR_REGISTRY }}/quisin-backend:staging
+        docker push ${{ secrets.ECR_REGISTRY }}/quisin-frontend:staging
+    
+    - name: Deploy to ECS
+      run: |
+        aws ecs update-service --cluster quisin-staging --service quisin-backend --force-new-deployment
+        aws ecs update-service --cluster quisin-staging --service quisin-frontend --force-new-deployment
+
+  deploy-production:
+    needs: [test, lint]
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: production
+    
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ secrets.AWS_REGION }}
+    
+    - name: Build and Push Docker Images
+      run: |
+        docker build -t quisin-backend:production ./backend
+        docker build -t quisin-frontend:production ./frontend
+        aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.ECR_REGISTRY }}
+        docker tag quisin-backend:production ${{ secrets.ECR_REGISTRY }}/quisin-backend:production
+        docker tag quisin-frontend:production ${{ secrets.ECR_REGISTRY }}/quisin-frontend:production
+        docker push ${{ secrets.ECR_REGISTRY }}/quisin-backend:production
+        docker push ${{ secrets.ECR_REGISTRY }}/quisin-frontend:production
+    
+    - name: Deploy to ECS
+      run: |
+        aws ecs update-service --cluster quisin-production --service quisin-backend --force-new-deployment
+        aws ecs update-service --cluster quisin-production --service quisin-frontend --force-new-deployment

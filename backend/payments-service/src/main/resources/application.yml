@@ -1,0 +1,51 @@
+server:
+  port: 8088
+  servlet:
+    context-path: /api/v1
+
+spring:
+  application:
+    name: payments-service
+  datasource:
+    url: jdbc:postgresql://localhost:5432/quisin_payments_db
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+
+# Payment Gateway Configurations (Placeholders)
+mpesa:
+  consumer-key: ${MPESA_CONSUMER_KEY}
+  consumer-secret: ${MPESA_CONSUMER_SECRET}
+  environment: sandbox  # or production
+
+stripe:
+  api-key: ${STRIPE_API_KEY}
+
+coinbase:
+  api-key: ${COINBASE_API_KEY}
+  api-secret: ${COINBASE_API_SECRET}
+
+logging:
+  level:
+    org.springframework.web: INFO
+    org.hibernate.SQL: DEBUG
+    com.quisin.payments: DEBUG
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+  api-docs:
+    path: /v3/api-docs
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,metrics,info

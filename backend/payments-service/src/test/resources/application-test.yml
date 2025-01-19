@@ -1,0 +1,43 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    username: sa
+    password: password
+    driver-class-name: org.h2.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+
+payment:
+  stripe:
+    api-key: sk_test_mock_key
+    webhook-secret: whsec_mock_secret
+  mpesa:
+    consumer-key: mock_consumer_key
+    consumer-secret: mock_consumer_secret
+    passkey: mock_passkey
+    business-shortcode: "174379"
+    callback-url: http://localhost:8089/api/payments/mpesa/callback
+  paypal:
+    client-id: mock_client_id
+    client-secret: mock_client_secret
+    mode: sandbox
+
+security:
+  jwt:
+    secret: mock_jwt_secret_key_for_testing_purposes_only
+    expiration: 86400000 # 24 hours
+
+eureka:
+  client:
+    enabled: false
+
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 5000
+        readTimeout: 5000
+        loggerLevel: full 

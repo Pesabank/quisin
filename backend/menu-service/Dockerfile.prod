@@ -1,0 +1,38 @@
+# Stage 1: Build the application
+FROM eclipse-temurin:17-jdk-alpine as build
+
+# Set working directory
+WORKDIR /workspace/app
+
+# Copy Maven configuration
+COPY mvnw .
+COPY .mvn .mvn
+COPY pom.xml .
+COPY src src
+
+# Build application with production profile
+RUN ./mvnw install -DskipTests -Pprod
+RUN mkdir -p target/dependency && (cd target/dependency; jar -xf ../*.jar)
+
+# Stage 2: Create the runtime image
+FROM eclipse-temurin:17-jre-alpine
+VOLUME /tmp
+
+# Copy dependency layers
+ARG DEPENDENCY=/workspace/app/target/dependency
+COPY --from=build ${DEPENDENCY}/BOOT-INF/lib /app/lib
+COPY --from=build ${DEPENDENCY}/META-INF /app/META-INF
+COPY --from=build ${DEPENDENCY}/BOOT-INF/classes /app
+
+# Create directory for image storage
+RUN mkdir -p /app/images
+
+# Add health check
+HEALTHCHECK --interval=30s --timeout=3s \
+  CMD wget -q --spider http://localhost:8084/actuator/health || exit 1
+
+# Expose service port
+EXPOSE 8084
+
+# Start the service
+ENTRYPOINT ["java","-cp","app:app/lib/*","-Dspring.profiles.active=prod","com.quisin.menuservice.MenuServiceApplication"] 

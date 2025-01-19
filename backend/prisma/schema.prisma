@@ -1,0 +1,92 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(uuid())
+  email         String    @unique
+  password      String
+  name          String
+  role          Role      @default(USER)
+  restaurant    Restaurant? @relation(fields: [restaurantId], references: [id])
+  restaurantId  String?
+  stockAdjustments StockAdjustment[]
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model Restaurant {
+  id            String    @id @default(uuid())
+  name          String
+  address       String
+  phone         String
+  email         String?
+  chain         Chain?    @relation(fields: [chainId], references: [id])
+  chainId       String?
+  staff         User[]
+  menuItems     MenuItem[]
+  tables        Table[]
+  orders        Order[]
+  inventory     InventoryItem[]
+  analytics     Analytics[]
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model Chain {
+  id            String    @id @default(uuid())
+  restaurants   Restaurant[]
+}
+
+model MenuItem {
+  id            String    @id @default(uuid())
+  restaurant    Restaurant @relation(fields: [restaurantId], references: [id])
+  restaurantId  String
+}
+
+model Table {
+  id            String    @id @default(uuid())
+  restaurant    Restaurant @relation(fields: [restaurantId], references: [id])
+  restaurantId  String
+}
+
+model Order {
+  id            String    @id @default(uuid())
+  restaurant    Restaurant @relation(fields: [restaurantId], references: [id])
+  restaurantId  String
+}
+
+model InventoryItem {
+  id            String    @id @default(uuid())
+  restaurant    Restaurant @relation(fields: [restaurantId], references: [id])
+  restaurantId  String
+}
+
+model Analytics {
+  id            String    @id @default(uuid())
+  restaurant    Restaurant @relation(fields: [restaurantId], references: [id])
+  restaurantId  String
+}
+
+model StockAdjustment {
+  id              String    @id @default(uuid())
+  adjustmentType  String
+  reason          String
+  oldQuantity     Float
+  newQuantity     Float
+  adjustedBy      User      @relation(fields: [adjustedById], references: [id])
+  adjustedById    String
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+}
+
+enum Role {
+  USER
+  ADMIN
+  SUPER_ADMIN
+}

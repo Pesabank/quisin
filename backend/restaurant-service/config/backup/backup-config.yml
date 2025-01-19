@@ -1,0 +1,16 @@
+backup:
+  database:
+    retention-days: 30
+    schedule: "0 0 1 * * *"  # Daily at 1 AM
+    destination: /backup/database
+  
+  files:
+    retention-days: 7
+    schedule: "0 0 2 * * *"  # Daily at 2 AM
+    destination: /backup/files
+    include:
+      - /var/log/quisin
+      - /etc/quisin/config
+    exclude:
+      - "*.tmp"
+      - "*.log.*" 

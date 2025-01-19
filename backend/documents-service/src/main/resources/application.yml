@@ -1,0 +1,42 @@
+server:
+  port: 8090
+  servlet:
+    context-path: /api/v1/documents
+
+spring:
+  application:
+    name: document-service
+  cloud:
+    discovery:
+      enabled: true
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    prefer-ip-address: true
+
+quisin:
+  document:
+    brand-color: "#FF6B00"
+    brand-name: "Quisin"
+    templates:
+      qrcode:
+        width: 380
+        height: 480
+      excel:
+        default-sheet-name: "Quisin Data"
+      pdf:
+        margin: 50
+        font-size: 12
+        header-font-size: 16
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  metrics:
+    tags:
+      application: ${spring.application.name} 

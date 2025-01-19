@@ -1,0 +1,32 @@
+{
+  "extends": "./.nuxt/tsconfig.json",
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "strict": true,
+    "jsx": "preserve",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "esModuleInterop": true,
+    "lib": ["ESNext", "DOM"],
+    "skipLibCheck": true,
+    "noEmit": true,
+    "baseUrl": ".",
+    "paths": {
+      "~/*": ["./*"],
+      "@/*": ["./*"]
+    },
+    "types": [
+      "nuxt",
+      "@pinia/nuxt"
+    ]
+  },
+  "include": [
+    ".nuxt/types/nitro-imports.d.ts",
+    "**/*"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

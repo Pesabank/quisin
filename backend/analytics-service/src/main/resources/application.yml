@@ -1,0 +1,61 @@
+server:
+  port: 8092
+
+spring:
+  application:
+    name: analytics-service
+  datasource:
+    url: jdbc:postgresql://localhost:5432/quisin_analytics_db
+    username: ${ANALYTICS_DB_USER}
+    password: ${ANALYTICS_DB_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: analytics-service
+      auto-offset-reset: earliest
+  cloud:
+    stream:
+      bindings:
+        analyticsEvents-out-0:
+          destination: analytics-events
+          content-type: application/json
+        orderEvents-in-0:
+          destination: order-events
+          content-type: application/json
+        paymentEvents-in-0:
+          destination: payment-events
+          content-type: application/json
+        reservationEvents-in-0:
+          destination: reservation-events
+          content-type: application/json
+        reviewEvents-in-0:
+          destination: review-events
+          content-type: application/json
+
+analytics:
+  metrics:
+    update-interval: 300000 # 5 minutes
+    retention-days: 365
+  alerts:
+    enabled: true
+    check-interval: 60000 # 1 minute
+  cache:
+    ttl: 3600 # 1 hour
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,metrics,prometheus
+  metrics:
+    tags:
+      application: analytics-service
+    export:
+      prometheus:
+        enabled: true

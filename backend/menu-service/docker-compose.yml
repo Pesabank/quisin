@@ -1,0 +1,58 @@
+version: '3.8'
+
+services:
+  menu-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8084:8084"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/quisin_menu_db
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+      - SPRING_REDIS_HOST=redis
+      - SPRING_REDIS_PORT=6379
+      - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+      - QUISIN_SERVICES_NOTIFICATION_URL=http://notification-service:8085
+    volumes:
+      - menu-images:/app/images
+    depends_on:
+      - postgres
+      - redis
+      - kafka
+    networks:
+      - quisin-network
+
+  postgres:
+    image: postgres:latest
+    environment:
+      - POSTGRES_DB=quisin_menu_db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - quisin-network
+
+  redis:
+    image: redis:alpine
+    networks:
+      - quisin-network
+
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    environment:
+      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092
+      - KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1
+    networks:
+      - quisin-network
+
+volumes:
+  postgres-data:
+  menu-images:
+
+networks:
+  quisin-network:
+    external: true

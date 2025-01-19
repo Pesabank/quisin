@@ -1,0 +1,28 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Global Styles */
+body {
+  @apply font-sans text-gray-900 bg-gray-50;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  @apply w-2 bg-gray-100;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-quisin-orange rounded-full;
+}
+
+/* Transition Styles */
+.page-enter-active,
+.page-leave-active {
+  @apply transition-opacity duration-300;
+}
+
+.page-enter-from,
+.page-leave-to {
+  @apply opacity-0;
+}

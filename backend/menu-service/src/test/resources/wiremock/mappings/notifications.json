@@ -1,0 +1,118 @@
+{
+  "mappings": [
+    {
+      "request": {
+        "method": "POST",
+        "url": "/api/v1/notifications",
+        "bodyPatterns": [
+          {
+            "matchesJsonPath": "$.type",
+            "matches": "MENU_CREATED"
+          }
+        ]
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "id": "{{randomValue length=36 type='UUID'}}",
+          "status": "SENT",
+          "timestamp": "{{now format='yyyy-MM-dd''T''HH:mm:ss.SSSZ'}}"
+        }
+      }
+    },
+    {
+      "request": {
+        "method": "POST",
+        "url": "/api/v1/notifications",
+        "bodyPatterns": [
+          {
+            "matchesJsonPath": "$.type",
+            "matches": "MENU_UPDATED"
+          }
+        ]
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "id": "{{randomValue length=36 type='UUID'}}",
+          "status": "SENT",
+          "timestamp": "{{now format='yyyy-MM-dd''T''HH:mm:ss.SSSZ'}}"
+        }
+      }
+    },
+    {
+      "request": {
+        "method": "POST",
+        "url": "/api/v1/notifications",
+        "bodyPatterns": [
+          {
+            "matchesJsonPath": "$.type",
+            "matches": "MENU_DELETED"
+          }
+        ]
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "id": "{{randomValue length=36 type='UUID'}}",
+          "status": "SENT",
+          "timestamp": "{{now format='yyyy-MM-dd''T''HH:mm:ss.SSSZ'}}"
+        }
+      }
+    },
+    {
+      "request": {
+        "method": "POST",
+        "url": "/api/v1/notifications",
+        "bodyPatterns": [
+          {
+            "matchesJsonPath": "$.priority",
+            "matches": "HIGH"
+          }
+        ]
+      },
+      "priority": 1,
+      "response": {
+        "status": 200,
+        "fixedDelayMilliseconds": 100,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "id": "{{randomValue length=36 type='UUID'}}",
+          "status": "SENT",
+          "priority": "HIGH",
+          "timestamp": "{{now format='yyyy-MM-dd''T''HH:mm:ss.SSSZ'}}"
+        }
+      }
+    },
+    {
+      "request": {
+        "method": "POST",
+        "url": "/api/v1/notifications"
+      },
+      "priority": 10,
+      "response": {
+        "status": 200,
+        "fixedDelayMilliseconds": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "id": "{{randomValue length=36 type='UUID'}}",
+          "status": "SENT",
+          "timestamp": "{{now format='yyyy-MM-dd''T''HH:mm:ss.SSSZ'}}"
+        }
+      }
+    }
+  ]
+} 

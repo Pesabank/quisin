@@ -1,0 +1,30 @@
+spring:
+  config:
+    import: application-base.yml
+  
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:quisin_restaurant_db}
+    username: ${DB_USER:postgres}
+    password: ${DB_PASSWORD:postgres}
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 3
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+
+logging:
+  level:
+    root: INFO
+    com.quisin.restaurant: INFO
+  file:
+    name: /var/log/quisin/restaurant-service-staging.log
+    max-size: 50MB
+    max-history: 7
+
+server:
+  tomcat:
+    max-threads: 100
+    min-spare-threads: 10 

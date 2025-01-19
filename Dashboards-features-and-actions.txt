@@ -1,0 +1,86 @@
+How Quisin Works
+Quisin is a comprehensive restaurant management system designed to streamline operations across various roles: superadmins, restaurant admins, waitstaff, kitchen staff, and customers. It offers tailored dashboards for each role to manage their specific tasks efficiently, ensuring a seamless experience from backend operations to customer service.
+
+Dashboard Details
+1. Superadmin Dashboard
+The Superadmin dashboard provides global control and oversight of all restaurants registered in the system.
+
+Key Features:
+Add Restaurant:
+
+Input restaurant details: name, country, location, currency, and logo.
+Add admin details: name, email, phone number.
+Generate and assign credentials for the admin.
+Restaurants Overview:
+
+Displays a list of registered restaurants with details: logo, name, ID, location, admin name, status (active/inactive), and action options (disable or download credentials).
+Disabling a restaurant prompts a password confirmation.
+Home Page:
+
+Quick action buttons: Add Restaurant, System Settings, Export Data, View Analytics, Logout.
+Displays real-time statistics: Total revenue, active restaurants, total staff, and other metrics.
+Dynamic list of all registered restaurants that updates in real-time.
+Export Data:
+
+Allows exporting analytics and data in various formats like CSV or PDF.
+
+2. Admin Dashboard
+The Admin dashboard is tailored for restaurant-specific management tasks, offering tools to manage tables, menus, reservations, staff, and analytics.
+
+Key Features:
+Table Management:
+
+Add tables and generate downloadable QR codes (PNG or PDF).
+Overview of all tables with details and action options.
+Menu & Inventory Management:
+
+Add dishes with detailed descriptions, categories, and inventory levels.
+Icons for dish attributes (vegetarian, allergens, spicy).
+Update inventory via intuitive icon-based actions.
+Reservation Management:
+
+View and sort reservations by location, status, and timeframe (daily, weekly, monthly).
+Staff & Role Management:
+
+Add staff and assign roles with specific permissions.
+Staff overview with icons (male/female), name, role, location, status, and actions (edit, delete, or download credentials).
+Chain Management:
+
+Add and manage multiple restaurants within a chain.
+View chain details in card format.
+Analytics Section:
+
+Multiple dimensions of analytics with visual representations.
+Real-time reviews section to view customer feedback.
+3. Waiter Dashboard
+The Waiter dashboard simplifies order handling and table assignments for waitstaff.
+
+Key Features:
+Table Overview:
+
+View current table statuses and assign tables to guests.
+Order Management:
+
+Access active orders specific to the waiter.
+Notifications for new orders or table assignments.
+Take Order:
+
+View categorized menu items.
+Real-time updates to a "current order" section showing subtotal and total.
+Search items and add/remove them from the order.
+Options to cancel or place the order, sending it directly to the kitchen.
+4. Kitchen Dashboard
+The Kitchen dashboard facilitates real-time order management for kitchen staff.
+
+Key Features:
+New Orders Section:
+
+Displays incoming orders with details: table number, items ordered, comments.
+Start Preparing button for order tracking.
+View Details button shows assigned waiter, order number, and full order breakdown.
+Order Status Management:
+
+Separate sections for New Orders, Preparing, and Served.
+Search and sort functionality for orders, dishes, and waiters.
+
+Then there is the payments module, analytics, and notifications, and the rating and review module.

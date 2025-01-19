@@ -1,0 +1,90 @@
+server:
+  port: 8081
+  servlet:
+    context-path: /api
+
+spring:
+  application:
+    name: auth-service
+  
+  main:
+    allow-bean-definition-overriding: true
+  
+  datasource:
+    url: jdbc:postgresql://postgres:5432/quisin_auth
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
+      idle-timeout: 300000
+      connection-timeout: 20000
+  
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  
+  data:
+    redis:
+      host: redis
+      port: 6379
+      timeout: 10000
+      connect-timeout: 10000
+      client-name: auth-service
+      client-type: lettuce
+      lettuce:
+        pool:
+          max-active: 8
+          max-idle: 8
+          min-idle: 0
+          max-wait: -1
+        shutdown-timeout: 200ms
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    enabled: true
+  api-docs:
+    path: /v3/api-docs
+    enabled: true
+
+jwt:
+  secret: ${JWT_SECRET:your-256-bit-secret-key-here}
+  expiration: 86400000 # 24 hours
+  refresh-token:
+    expiration: 604800000 # 7 days
+
+cors:
+  allowed-origins: 
+    - http://localhost:3000
+    - http://localhost:8080
+  allowed-methods: GET,POST,PUT,DELETE,OPTIONS
+  allowed-headers: Authorization,Content-Type,X-Requested-With
+  max-age: 3600
+
+logging:
+  level:
+    root: INFO
+    com.quisin: INFO
+    org.springframework.security: INFO
+    org.springframework.web: INFO
+    com.quisin.auth: DEBUG
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+      base-path: /actuator
+  endpoint:
+    health:
+      show-details: always
+  health:
+    redis:
+      enabled: true
