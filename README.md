@@ -1,142 +1,178 @@
-# Quisin Restaurant Management System
-
-A modern, microservices-based restaurant management system built with Spring Boot and Docker.
+# Quisin - Modern Restaurant Management System
 
 ## Overview
+Quisin is a comprehensive restaurant management system built with a microservices architecture, offering role-based dashboards and real-time features for restaurant operations.
 
-Quisin is a comprehensive restaurant management system that helps restaurants manage their operations efficiently. The system is built using a microservices architecture, with each service handling specific business functionality.
+### Key Features
+- Multi-tenant architecture supporting multiple restaurants
+- Role-based access control (Superadmin, Admin, Kitchen, Waiter, Customer)
+- Real-time order management and tracking
+- Integrated payment processing (Multiple payment methods)
+- Advanced analytics and reporting
+- Inventory management
+- Customer loyalty program
+- QR code-based ordering system
 
-## Services
+## Technology Stack
 
-### Order Service ✅
-- Order management and processing
-- Real-time menu validation
-- Waiter assignment system
-- Event-driven architecture
-- Redis caching
-- Comprehensive test coverage
+### Backend
+- **Core**: Java 17, Kotlin
+- **Framework**: Spring Boot 3.2.1, Spring Cloud
+- **Database**: PostgreSQL (primary), Redis (caching)
+- **Messaging**: Kafka
+- **Security**: JWT, OAuth2
+- **Documentation**: OpenAPI/Swagger
+- **Build**: Maven
+- **Containerization**: Docker & Docker Compose
 
-### Auth Service ✅
-- User authentication and authorization
-- JWT token management
-- Role-based access control
-- Security features
+### Frontend
+- **Framework**: Nuxt.js 3 (Vue 3)
+- **Language**: TypeScript
+- **State Management**: Pinia
+- **Styling**: Tailwind CSS
+- **Testing**: Vitest, Vue Test Utils
+- **Real-time**: WebSocket
 
-### User Service ✅
-- User profile management
-- Staff management
-- Role management
+## System Architecture
 
-### Restaurant Service ✅
-- Restaurant management
-- Chain management
-- Location management
-
-### Menu Service ✅
-- Menu management
-- Inventory tracking
-- Real-time availability updates
-
-### Payment Service ✅
-- Secure payment processing
-- Multiple payment methods support
-- Transaction history
-- Payment status tracking
-- Refund management
-
-### Reservation Service ✅
-- Table reservation management
-- Capacity management
-- Waitlist handling
-- Real-time availability updates
-- Email notifications
-
-### Review Service ✅
-- Customer reviews and ratings
-- Review moderation
-- Response management
-- Analytics integration
-- Sentiment analysis
-
-### Analytics Service ✅
-- Business intelligence
-- Performance metrics
-- Customer insights
-- Sales analytics
-- Trend analysis
-
-## Technical Stack
-
-- Java 17
-- Spring Boot 3.2.1
-- Spring Cloud
-- PostgreSQL
-- Redis
-- Kafka
-- Docker
-- Maven
+### Microservices
+1. **API Gateway**: Entry point and routing
+2. **Auth Service**: Authentication and authorization
+3. **User Service**: User management and profiles
+4. **Restaurant Service**: Restaurant management
+5. **Menu Service**: Menu and inventory management
+6. **Order Service**: Order processing and tracking
+7. **Payment Service**: Payment processing (Multiple gateways)
+8. **Analytics Service**: Business intelligence and reporting
+9. **Notification Service**: Real-time notifications
+10. **QR Code Service**: QR code generation and management
+11. **Document Service**: Document generation and management
 
 ## Getting Started
 
 ### Prerequisites
-- JDK 17
-- Maven
-- Docker & Docker Compose
-- PostgreSQL
-- Redis
+1. Install required software:
+   ```bash
+   - JDK 17
+   - Node.js 18+
+   - Docker & Docker Compose
+   - PostgreSQL 14+
+   - Redis 6+
+   - Kafka
+   ```
 
-### Building the Project
-
+### Backend Setup
 1. Clone the repository:
-```bash
-git clone https://github.com/yourusername/quisin.git
-cd quisin
-```
+   ```bash
+   git clone https://github.com/Pesabank/quisin.git
+   cd quisin/backend
+   ```
 
-2. Build all services:
-```bash
-cd backend
-mvn clean package
-```
+2. Configure environment variables:
+   ```bash
+   cp .env.example .env
+   # Edit .env with your configurations
+   ```
 
-3. Build Docker images:
-```bash
-docker-compose build
-```
+3. Build all services:
+   ```bash
+   ./build-services.sh
+   ```
 
-4. Run the system:
-```bash
-docker-compose up -d
-```
+4. Start the infrastructure:
+   ```bash
+   docker-compose up -d postgres redis kafka
+   ```
 
-## Architecture
+5. Run the services:
+   ```bash
+   docker-compose up -d
+   ```
 
-### Event-Driven Communication
-- Kafka for asynchronous communication
-- Event publishing for order updates
-- Real-time notifications
+### Frontend Setup
+1. Navigate to frontend directory:
+   ```bash
+   cd ../frontend
+   ```
 
-### Caching Strategy
-- Redis for high-performance caching
-- Menu item caching
-- User session caching
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
 
-### Security
-- JWT-based authentication
-- Role-based access control
-- API Gateway security
+3. Configure environment:
+   ```bash
+   cp .env.example .env
+   ```
+
+4. Run development server:
+   ```bash
+   npm run dev
+   ```
+
+## Role-Based Dashboards
+
+### Superadmin Dashboard
+- Global restaurant management
+- System-wide analytics
+- Restaurant onboarding
+- Global settings management
+
+### Restaurant Admin Dashboard
+- Restaurant-specific management
+- Menu and inventory control
+- Staff management
+- Analytics and reporting
+
+### Kitchen Dashboard
+- Real-time order management
+- Order prioritization
+- Preparation time tracking
+- Inventory alerts
+
+### Waiter Dashboard
+- Table management
+- Order taking
+- Bill management
+- Customer service requests
+
+### Customer Dashboard
+- Menu browsing
+- Order placement
+- Payment processing
+- Order tracking
 
 ## API Documentation
+- API Gateway: http://localhost:8080/swagger-ui.html
+- Individual service Swagger docs available at: http://localhost:{port}/swagger-ui.html
 
-Each service includes its own API documentation. Access the Swagger UI at:
-- Order Service: http://localhost:8085/swagger-ui.html
-- Auth Service: http://localhost:8081/swagger-ui.html
-- User Service: http://localhost:8082/swagger-ui.html
-- Restaurant Service: http://localhost:8083/swagger-ui.html
-- Menu Service: http://localhost:8084/swagger-ui.html
+## Testing
+```bash
+# Backend
+cd backend
+./mvnw test        # Unit tests
+./mvnw verify      # Integration tests
+
+# Frontend
+cd frontend
+npm run test       # All tests
+npm run test:unit  # Unit tests only
+```
+
+## Monitoring
+- Health checks: `/actuator/health`
+- Metrics: `/actuator/metrics`
+- Prometheus: `/actuator/prometheus`
+
+## Security Features
+- JWT authentication
+- Role-based access control
+- API rate limiting
+- Input validation
+- XSS protection
+- CORS configuration
 
 ## Contributing
-
 1. Fork the repository
 2. Create a feature branch
 3. Commit your changes
@@ -144,53 +180,7 @@ Each service includes its own API documentation. Access the Swagger UI at:
 5. Create a Pull Request
 
 ## License
+This project is licensed under the MIT License.
 
-This project is proprietary and confidential. 
-
-## Production Environment
-
-### Monitoring & Observability
-- Prometheus for metrics collection
-- Grafana dashboards
-- Custom business metrics
-- Service health monitoring
-- Performance tracking
-
-### High Availability
-- Service discovery
-- Load balancing
-- Circuit breakers
-- Fallback mechanisms
-- Scalable architecture
-
-### Security
-- SSL/TLS encryption
-- API Gateway security
-- Rate limiting
-- CORS configuration
-- Service authentication
-
-### Data Management
-- Automated backups
-- Data migration tools
-- Cache management
-- Message queue system
-- Database replication
-
-## Monitoring Dashboard
-
-Access the Grafana dashboard at http://localhost:3000 to view:
-
-### System Metrics
-- Service health status
-- HTTP response times
-- Resource utilization
-- Error rates
-- System performance
-
-### Business Metrics
-- Payment transaction rates
-- Order processing times
-- Reservation confirmation rates
-- Customer satisfaction trends
-- Revenue analytics
+## Support
+For support and queries, please create an issue in the repository.
